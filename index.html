@@ -7,8 +7,8 @@
 
   <!-- Nhúng font Share Tech Mono -->
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <!-- Liên kết đến style.css -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Đảm bảo file style.css nằm ở root, nên href="style.css" -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -17,7 +17,7 @@
 
   <!-- Cửa sổ chính -->
   <div class="terminal-window">
-
+    
     <!-- Thanh tiêu đề -->
     <div class="title-bar">
       <div class="title">KIỂM TRA MÃ ẨN  -  XÓA MÃ ẨN</div>
@@ -27,14 +27,14 @@
         <span class="control close"></span>
       </div>
     </div>
-
+    
     <!-- Thanh Tabs -->
     <div class="tabs">
       <span class="tab active" data-tab="tab1">Kiểm tra mã ẩn</span>
       <span class="tab" data-tab="tab2">Xóa mã ẩn</span>
       <span class="tab" data-tab="tab3">Kiểm tra cổng game</span>
     </div>
-
+    
     <!-- ======= Tab 1: Kiểm tra mã Ẩn ======= -->
     <div class="tab-content active" id="tab1">
       <div class="tab1-flex">
@@ -110,7 +110,7 @@
 
   </div>
 
-  <!-- Liên kết đến script.js -->
+  <!-- Links đến CSS / JS -->
   <script src="script.js"></script>
 </body>
 </html>
