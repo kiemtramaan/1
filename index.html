@@ -7,13 +7,36 @@
 
   <!-- Nhúng font Share Tech Mono -->
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <!-- Đảm bảo file style.css nằm ở root, nên href="style.css" -->
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Link đến CSS bên ngoài -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <!-- Canvas chạy hiệu ứng Matrix Rain -->
   <canvas id="matrix"></canvas>
+
+  <!-- ===== Login Overlay ===== -->
+  <div id="login-overlay">
+    <div class="login-box">
+      <h2>Đăng nhập</h2>
+      <div class="field">
+        <label for="login-user">Tên đăng nhập</label>
+        <input type="text" id="login-user" placeholder="Username">
+      </div>
+      <div class="field">
+        <label for="login-pass">Mật khẩu</label>
+        <div class="password-wrapper">
+          <input type="password" id="login-pass" placeholder="Password">
+          <!-- Biểu tượng con mắt -->
+          <span class="toggle-password" id="togglePass">👁️</span>
+        </div>
+      </div>
+      <button class="login-btn" id="login-btn" disabled>Đăng nhập</button>
+      <div class="error-msg" id="login-error">Vui lòng điền đầy đủ thông tin</div>
+    </div>
+  </div>
+  <!-- ===== End Login Overlay ===== -->
 
   <!-- Cửa sổ chính -->
   <div class="terminal-window">
@@ -35,10 +58,9 @@
       <span class="tab" data-tab="tab3">Kiểm tra cổng game</span>
     </div>
     
-    <!-- ======= Tab 1: Kiểm tra mã Ẩn ======= -->
+    <!-- Tab 1 -->
     <div class="tab-content active" id="tab1">
       <div class="tab1-flex">
-        <!-- Cột trái: form (3 input + START + IP dưới START) -->
         <div class="tab1-form">
           <div class="field">
             <label for="phone">Số điện thoại_</label>
@@ -53,21 +75,16 @@
             <input type="text" id="game-account" placeholder="">
           </div>
           <button class="action-btn" id="start-btn1" disabled>START</button>
-          <!-- Nơi hiển thị IP (xuất dưới START) -->
-          <div class="ip-display" id="ip-display1" style="margin-top:8px;"></div>
+          <div class="ip-display" id="ip-display1"></div>
         </div>
-        <!-- Cột phải: ô kết quả -->
-        <div class="tab1-countdown" id="countdown-display1">
-          <!-- Khi chưa bấm START, giữ trống để khung hiển thị -->
-        </div>
+        <div class="tab1-countdown" id="countdown-display1"></div>
       </div>
       <div class="result-block" id="result-block1-extra"></div>
     </div>
 
-    <!-- ======= Tab 2: Xóa mã Ẩn ======= -->
+    <!-- Tab 2 -->
     <div class="tab-content" id="tab2">
       <div class="tab2-flex">
-        <!-- Cột trái: form (3 input + START + IP dưới START) -->
         <div class="tab2-form">
           <div class="field">
             <label for="del-phone">Số điện thoại_</label>
@@ -82,18 +99,14 @@
             <input type="text" id="del-game-account" placeholder="">
           </div>
           <button class="action-btn" id="start-btn2" disabled>START</button>
-          <!-- Nơi hiển thị IP (xuất dưới START) -->
-          <div class="ip-display" id="ip-display2" style="margin-top:8px;"></div>
+          <div class="ip-display" id="ip-display2"></div>
         </div>
-        <!-- Cột phải: ô đếm ngược / cảnh báo -->
-        <div class="tab2-countdown" id="countdown-display2">
-          <!-- Khi chưa bấm START, giữ trống để khung hiển thị -->
-        </div>
+        <div class="tab2-countdown" id="countdown-display2"></div>
       </div>
       <div class="result-block" id="result-block2-extra"></div>
     </div>
 
-    <!-- ======= Tab 3: Kiểm tra cổng game ======= -->
+    <!-- Tab 3 -->
     <div class="tab-content" id="tab3">
       <div class="tab3-form">
         <div class="field">
@@ -102,15 +115,13 @@
         </div>
         <button class="action-btn" id="start-btn3" disabled>START</button>
       </div>
-      <div class="tab3-countdown" id="countdown-display3">
-        <!-- Ban đầu giữ trống để khung hiển thị -->
-      </div>
+      <div class="tab3-countdown" id="countdown-display3"></div>
       <div class="result-block" id="result-block3-extra"></div>
     </div>
 
   </div>
 
-  <!-- Links đến CSS / JS -->
+  <!-- Link đến JavaScript bên ngoài -->
   <script src="script.js"></script>
 </body>
 </html>
