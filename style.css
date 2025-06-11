@@ -161,15 +161,15 @@ body {
   display: inline-block;
   width: 100px;
   height: 36px;
-  line-height: 36px;       /* Căn chữ dọc */
+  line-height: 36px;
   background: transparent;
   color: #00ff00;
   border: 2px solid #00ff00;
   border-radius: 4px;
   font-size: 14px;
-  text-align: center;      /* Căn chữ ngang */
+  text-align: center;
   cursor: not-allowed;
-  margin-top: 14px;        /* Khoảng cách phía trên */
+  margin-top: 14px;
   margin-bottom: 16px;
   transition: all 0.2s ease;
   opacity: 0.5;
@@ -189,7 +189,7 @@ body {
 .tab1-flex {
   display: flex;
   width: 100%;
-  gap: 12px;           /* Khoảng cách giữa 2 cột */
+  gap: 12px;
   margin-bottom: 12px;
 }
 .tab1-form {
@@ -198,7 +198,7 @@ body {
   flex-direction: column;
 }
 .tab1-form .action-btn {
-  margin-top: 4px;     /* Sát ngay dưới input cuối */
+  margin-top: 4px;
 }
 .tab1-countdown {
   flex: 1;
@@ -210,7 +210,7 @@ body {
   border: 1px solid #00ff00;
   border-radius: 6px;
   box-shadow: 0 0 10px #00ff00;
-  min-height: 190px;    /* Đủ cao để chứa nội dung */
+  min-height: 190px;
   padding: 8px;
   text-align: center;
   user-select: none;
@@ -228,13 +228,19 @@ body {
   animation: blinkWarning 1s steps(2, start) infinite;
   margin: 4px 0;
 }
+.tab1-countdown .warning-icon {
+  font-size: 48px;
+  color: #00ff00;
+  text-shadow: 0 0 6px #00ff00;
+  margin-bottom: 10px;
+}
 
 /* ==================== Tab 2: Hai cột (giữ nguyên) ==================== */
 .tab2-flex {
   display: flex;
   width: 100%;
   margin-bottom: 12px;
-  gap: 12px;  /* Khoảng cách giữa cột trái và cột phải */
+  gap: 12px;
 }
 .tab2-form {
   flex: 1;
@@ -242,7 +248,7 @@ body {
   flex-direction: column;
 }
 .tab2-form .action-btn {
-  margin-top: 4px;  /* Sát ngay dưới input cuối */
+  margin-top: 4px;
 }
 .tab2-countdown {
   flex: 1;
@@ -269,15 +275,21 @@ body {
   animation: blinkWarning 1s steps(2, start) infinite;
   margin: 4px 0;
 }
+.tab2-countdown .warning-icon {
+  font-size: 48px;
+  color: #00ff00;
+  text-shadow: 0 0 6px #00ff00;
+  margin-bottom: 10px;
+}
 
-/* ==================== Tab 3: Một cột (Form + Ô kết quả) ==================== */
+/* &#8203;==================== Tab 3: Một cột (Form + Ô kết quả) ==================== */
 .tab3-form {
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
 }
 .tab3-form .action-btn {
-  margin-top: 4px;  /* Sát dưới input */
+  margin-top: 4px;
 }
 .tab3-countdown {
   display: flex;
@@ -305,8 +317,104 @@ body {
   color: #00ff00;
 }
 
-/* -------------------- Animation nhấp nháy chung -------------------- */
+/* -------------------- Animation nhấp nháy chung ==================== */
 @keyframes blinkWarning {
   50% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+/* ==================== Login Overlay ==================== */
+#login-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-box {
+  width: 300px;
+  background: #000;
+  border: 2px solid #00ff00;
+  border-radius: 6px;
+  box-shadow: 0 0 15px #00ff00;
+  padding: 20px;
+  text-align: center;
+}
+.login-box h2 {
+  color: #00ff00;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.login-box .field {
+  margin-bottom: 14px;
+  text-align: left;
+}
+.login-box .field label {
+  display: block;
+  font-size: 14px;
+  color: #00ff00;
+  margin-bottom: 4px;
+}
+.login-box .field input {
+  width: 100%;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #00ff00;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  padding-right: 32px;
+}
+.login-box .field input:focus {
+  border-color: #00ff00;
+  box-shadow: 0 0 6px #00ff00;
+}
+.login-box .password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.login-box .toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #00ff00;
+  cursor: pointer;
+  user-select: none;
+}
+.login-box .login-btn {
+  margin-top: 12px;
+  width: 100%;
+  height: 36px;
+  background: transparent;
+  color: #00ff00;
+  border: 2px solid #00ff00;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: not-allowed;
+  opacity: 0.5;
+  transition: all 0.2s;
+}
+.login-box .login-btn.enabled {
+  cursor: pointer;
+  opacity: 1;
+  background: rgba(0, 255, 0, 0.05);
+  box-shadow: 0 0 8px #00ff00;
+}
+.login-box .login-btn.enabled:hover {
+  background: rgba(0, 255, 0, 0.15);
+}
+.login-box .error-msg {
+  color: #ff4444;
+  font-size: 13px;
+  margin-top: 8px;
+  display: none;
 }
