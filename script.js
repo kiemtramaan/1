@@ -46,22 +46,19 @@ window.addEventListener('resize', () => {
 // =========================
 // 2. Chuyển Tab
 // =========================
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    // Bỏ active trên tất cả tab
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    // Gán active cho tab hiện tại
-    tab.classList.add('active');
-    // Ẩn hết nội dung tab-content
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    // Hiển thị nội dung tab được chọn
-    const tabId = tab.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
+function setupTabs() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+    });
   });
-});
+}
 
 // =========================
-// 3. Tạo IP ngẫu nhiên (10–12 chữ số, 4 đoạn)
+// 3. Tạo IP ngẫu nhiên
 // =========================
 function generateRandomIP() {
   const totalLength = Math.floor(Math.random() * 3) + 10; // 10, 11 hoặc 12
@@ -77,18 +74,17 @@ function generateRandomIP() {
       break;
     }
   }
-  const parts = segs.map(len => {
+  return segs.map(len => {
     let s = "";
     for (let i = 0; i < len; i++) {
       s += Math.floor(Math.random() * 10).toString();
     }
     return s;
-  });
-  return parts.join(".");
+  }).join(".");
 }
 
 // =========================
-// 4. Tạo mã ẨN (10 ký tự, chữ hoa + số)
+// 4. Tạo mã ẨN
 // =========================
 function generateCode(len = 10) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -100,7 +96,7 @@ function generateCode(len = 10) {
 }
 
 // =========================
-// 5. Tạo số phần trăm ngẫu nhiên trong khoảng [min, max]
+// 5. Tạo số phần trăm ngẫu nhiên
 // =========================
 function randomPercent(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -110,14 +106,68 @@ function randomPercent(min, max) {
 // 6. Validation chung
 // =========================
 function validatePhone(phone) {
-  return /^0\\d{9}$/.test(phone);
+  return /^0\d{9}$/.test(phone);
 }
 function validatePortOrAccount(text) {
   return /^[A-Za-z0-9]{4,}$/.test(text);
 }
 
+// =========================
+// 7. Xử lý Login + Hiển thị/ẩn mật khẩu
+// =========================
 document.addEventListener('DOMContentLoaded', () => {
-  // ----- Tab 1 (Kiểm tra mã Ẩn) -----
+  const loginOverlay = document.getElementById('login-overlay');
+  const loginUser    = document.getElementById('login-user');
+  const loginPass    = document.getElementById('login-pass');
+  const loginBtn     = document.getElementById('login-btn');
+  const loginError   = document.getElementById('login-error');
+  const togglePass   = document.getElementById('togglePass');
+
+  loginOverlay.style.display = 'flex';
+
+  function checkLoginValid() {
+    if (loginUser.value.trim() !== '' && loginPass.value.trim() !== '') {
+      loginBtn.disabled = false;
+      loginBtn.classList.add('enabled');
+    } else {
+      loginBtn.disabled = true;
+      loginBtn.classList.remove('enabled');
+    }
+    loginError.style.display = 'none';
+  }
+  loginUser.addEventListener('input', checkLoginValid);
+  loginPass.addEventListener('input', checkLoginValid);
+
+  togglePass.addEventListener('click', () => {
+    if (loginPass.type === 'password') {
+      loginPass.type = 'text';
+      togglePass.textContent = '🙈';
+    } else {
+      loginPass.type = 'password';
+      togglePass.textContent = '👁️';
+    }
+  });
+
+  loginBtn.addEventListener('click', () => {
+    const u = loginUser.value.trim();
+    const p = loginPass.value.trim();
+    if (u === 'funkaka123' && p === '1Minhtao') {
+      loginOverlay.style.display = 'none';
+      initApp();
+    } else {
+      loginError.textContent = 'Sai tên đăng nhập hoặc mật khẩu';
+      loginError.style.display = 'block';
+    }
+  });
+});
+
+// =========================
+// 8. Khởi tạo App sau login
+// =========================
+function initApp() {
+  setupTabs();
+
+  // Tab1 elements
   const phoneInput1 = document.getElementById('phone');
   const portInput1  = document.getElementById('game-port');
   const accInput1   = document.getElementById('game-account');
@@ -125,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ipDisplay1  = document.getElementById('ip-display1');
   const countdownDisplay1 = document.getElementById('countdown-display1');
 
-  // ----- Tab 2 (Xóa mã Ẩn) -----
+  // Tab2 elements
   const phoneInput2       = document.getElementById('del-phone');
   const portInput2        = document.getElementById('del-game-port');
   const accInput2         = document.getElementById('del-game-account');
@@ -133,22 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const ipDisplay2        = document.getElementById('ip-display2');
   const countdownDisplay2 = document.getElementById('countdown-display2');
 
-  // ----- Tab 3 (Kiểm tra cổng game) -----
+  // Tab3 elements
   const portInput3        = document.getElementById('check-port');
   const startBtn3         = document.getElementById('start-btn3');
   const countdownDisplay3 = document.getElementById('countdown-display3');
 
-  // Danh sách cổng mặc định (viết hoa)
   const defaultPorts = ['AE888', 'ST666', 'DAGA', 'KV999'];
 
-  // Kiểm tra enable START (Tab1)
+  // Validation functions
   function checkTab1Valid() {
-    const phone = phoneInput1.value.trim();
-    const port  = portInput1.value.trim();
-    const acc   = accInput1.value.trim();
-    if ( validatePhone(phone)
-      && validatePortOrAccount(port)
-      && validatePortOrAccount(acc) ) {
+    if (validatePhone(phoneInput1.value.trim())
+      && validatePortOrAccount(portInput1.value.trim())
+      && validatePortOrAccount(accInput1.value.trim())) {
       startBtn1.disabled = false;
       startBtn1.classList.add('enabled');
     } else {
@@ -156,14 +202,10 @@ document.addEventListener('DOMContentLoaded', () => {
       startBtn1.classList.remove('enabled');
     }
   }
-  // Kiểm tra enable START (Tab2)
   function checkTab2Valid() {
-    const phone = phoneInput2.value.trim();
-    const port  = portInput2.value.trim();
-    const acc   = accInput2.value.trim();
-    if ( validatePhone(phone)
-      && validatePortOrAccount(port)
-      && validatePortOrAccount(acc) ) {
+    if (validatePhone(phoneInput2.value.trim())
+      && validatePortOrAccount(portInput2.value.trim())
+      && validatePortOrAccount(accInput2.value.trim())) {
       startBtn2.disabled = false;
       startBtn2.classList.add('enabled');
     } else {
@@ -171,10 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
       startBtn2.classList.remove('enabled');
     }
   }
-  // Kiểm tra enable START (Tab3)
   function checkTab3Valid() {
-    const portVal = portInput3.value.trim();
-    if (portVal.length > 0) {
+    if (portInput3.value.trim().length > 0) {
       startBtn3.disabled = false;
       startBtn3.classList.add('enabled');
     } else {
@@ -183,25 +223,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Bắt sự kiện input Tab1
+  // Attach validation listeners
   phoneInput1.addEventListener('input', checkTab1Valid);
   portInput1.addEventListener('input', checkTab1Valid);
   accInput1.addEventListener('input', checkTab1Valid);
 
-  // Bắt sự kiện input Tab2
   phoneInput2.addEventListener('input', checkTab2Valid);
   portInput2.addEventListener('input', checkTab2Valid);
   accInput2.addEventListener('input', checkTab2Valid);
 
-  // Bắt sự kiện input Tab3
   portInput3.addEventListener('input', checkTab3Valid);
 
-  // ===== Xử lý START Tab1 =====
+  // START Tab1
   startBtn1.addEventListener('click', () => {
-    // Reset IP & countdown bên phải
     ipDisplay1.textContent = "";
     countdownDisplay1.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
-
     let countdown = 5;
     const timer1 = setInterval(() => {
       if (countdown > 1) {
@@ -209,22 +245,16 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownDisplay1.innerHTML = `<div><em>Vui lòng chờ ${countdown} giây...</em></div>`;
       } else {
         clearInterval(timer1);
-
-        // Tạo IP và kiểm tra cổng
         const ip = generateRandomIP();
         const portVal = portInput1.value.trim().toUpperCase();
         ipDisplay1.innerHTML = `<strong>IP:</strong> ${ip}`;
-
         if (defaultPorts.includes(portVal)) {
-          // Nếu cổng nằm trong list: hiển thị TÀI KHOẢN KHÔNG CÓ MÃ ẨN (màu xanh)
-          countdownDisplay1.innerHTML = `
-            <div style="color: #00ff00;"><strong>TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>
-          `;
+          countdownDisplay1.innerHTML = `<div style="color: #00ff00;"><strong>☠ TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>`;
         } else {
-          // Ngược lại: hiển thị cảnh báo + mã ẩn
           const code = generateCode(10);
           countdownDisplay1.innerHTML = `
-            <div><strong>CẢNH BÁO TÀI KHOẢN CHỨ MÃ ẨN</strong></div>
+            <div class="warning-icon">☠</div>
+            <div><strong>CẢNH BÁO TÀI KHOẢN CHỨA MÃ ẨN</strong></div>
             <div class="blink">${code}</div>
           `;
         }
@@ -232,12 +262,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   });
 
-  // ===== Xử lý START Tab2 (Xóa mã Ẩn) =====
+  // START Tab2
   startBtn2.addEventListener('click', () => {
-    // Reset IP & countdown bên phải
     ipDisplay2.textContent = "";
     countdownDisplay2.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
-
     let countdown2 = 5;
     const timer2 = setInterval(() => {
       if (countdown2 > 1) {
@@ -245,19 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownDisplay2.innerHTML = `<div><em>Vui lòng chờ ${countdown2} giây...</em></div>`;
       } else {
         clearInterval(timer2);
-
         const ip = generateRandomIP();
         const portVal = portInput2.value.trim().toUpperCase();
         ipDisplay2.innerHTML = `<strong>IP:</strong> ${ip}`;
-
         if (defaultPorts.includes(portVal)) {
-          // Nếu cổng nằm trong list: hiển thị TÀI KHOẢN KHÔNG CÓ MÃ ẨN (màu xanh)
-          countdownDisplay2.innerHTML = `
-            <div style="color: #00ff00;"><strong>TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>
-          `;
+          countdownDisplay2.innerHTML = `<div style="color: #00ff00;"><strong>☠ TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>`;
         } else {
-          // Ngược lại: cảnh báo không thể xóa mã ẩn
           countdownDisplay2.innerHTML = `
+            <div class="warning-icon">☠</div>
             <div class="blink">CẢNH BÁO</div>
             <div class="blink">KHÔNG THỂ XÓA MÃ ẨN</div>
           `;
@@ -266,12 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   });
 
-  // ===== Xử lý START Tab3 (Kiểm tra cổng game) =====
+  // START Tab3
   startBtn3.addEventListener('click', () => {
     const portVal = portInput3.value.trim().toUpperCase();
-    // Hiển thị đếm ngược
     countdownDisplay3.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
-
     let countdown3 = 5;
     const timer3 = setInterval(() => {
       if (countdown3 > 1) {
@@ -279,7 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownDisplay3.innerHTML = `<div><em>Vui lòng chờ ${countdown3} giây...</em></div>`;
       } else {
         clearInterval(timer3);
-
         let positionText, uyTinPercent, maAnPercent;
         if (defaultPorts.includes(portVal)) {
           positionText = 'Quốc tế';
@@ -290,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
           uyTinPercent  = randomPercent(40, 50);
           maAnPercent   = randomPercent(70, 98);
         }
-
         countdownDisplay3.innerHTML = `
           <div class="result-line"><strong>Vị trí_</strong> ${positionText}</div>
           <div class="result-line"><strong>% Uy tín_</strong> <span class="percent">${uyTinPercent}%</span></div>
@@ -299,4 +318,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 1000);
   });
-});
+}
