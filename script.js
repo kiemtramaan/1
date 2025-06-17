@@ -61,7 +61,7 @@ function setupTabs() {
 // 3. Tạo IP ngẫu nhiên
 // =========================
 function generateRandomIP() {
-  const totalLength = Math.floor(Math.random() * 3) + 10; // 10, 11 hoặc 12
+  const totalLength = Math.floor(Math.random() * 3) + 10;
   let segs;
   while (true) {
     const a = Math.floor(Math.random() * 3) + 1;
@@ -167,7 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function initApp() {
   setupTabs();
 
-  // Tab1 elements
   const phoneInput1 = document.getElementById('phone');
   const portInput1  = document.getElementById('game-port');
   const accInput1   = document.getElementById('game-account');
@@ -175,7 +174,6 @@ function initApp() {
   const ipDisplay1  = document.getElementById('ip-display1');
   const countdownDisplay1 = document.getElementById('countdown-display1');
 
-  // Tab2 elements
   const phoneInput2       = document.getElementById('del-phone');
   const portInput2        = document.getElementById('del-game-port');
   const accInput2         = document.getElementById('del-game-account');
@@ -183,14 +181,12 @@ function initApp() {
   const ipDisplay2        = document.getElementById('ip-display2');
   const countdownDisplay2 = document.getElementById('countdown-display2');
 
-  // Tab3 elements
   const portInput3        = document.getElementById('check-port');
   const startBtn3         = document.getElementById('start-btn3');
   const countdownDisplay3 = document.getElementById('countdown-display3');
 
-  const defaultPorts = ['AE888', 'ST666', 'DAGA', 'KV999'];
+  const defaultPorts = ['UU88'];
 
-  // Validation functions
   function checkTab1Valid() {
     if (validatePhone(phoneInput1.value.trim())
       && validatePortOrAccount(portInput1.value.trim())
@@ -223,7 +219,6 @@ function initApp() {
     }
   }
 
-  // Attach validation listeners
   phoneInput1.addEventListener('input', checkTab1Valid);
   portInput1.addEventListener('input', checkTab1Valid);
   accInput1.addEventListener('input', checkTab1Valid);
@@ -234,7 +229,6 @@ function initApp() {
 
   portInput3.addEventListener('input', checkTab3Valid);
 
-  // START Tab1
   startBtn1.addEventListener('click', () => {
     ipDisplay1.textContent = "";
     countdownDisplay1.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
@@ -262,7 +256,6 @@ function initApp() {
     }, 1000);
   });
 
-  // START Tab2
   startBtn2.addEventListener('click', () => {
     ipDisplay2.textContent = "";
     countdownDisplay2.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
@@ -289,7 +282,6 @@ function initApp() {
     }, 1000);
   });
 
-  // START Tab3
   startBtn3.addEventListener('click', () => {
     const portVal = portInput3.value.trim().toUpperCase();
     countdownDisplay3.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
