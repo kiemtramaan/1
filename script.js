@@ -61,26 +61,7 @@ function setupTabs() {
 // 3. Tạo IP ngẫu nhiên
 // =========================
 function generateRandomIP() {
-  const totalLength = Math.floor(Math.random() * 3) + 10;
-  let segs;
-  while (true) {
-    const a = Math.floor(Math.random() * 3) + 1;
-    const b = Math.floor(Math.random() * 3) + 1;
-    const c = Math.floor(Math.random() * 3) + 1;
-    const sum3 = a + b + c;
-    const d = totalLength - sum3;
-    if (d >= 1 && d <= 3) {
-      segs = [a, b, c, d];
-      break;
-    }
-  }
-  return segs.map(len => {
-    let s = "";
-    for (let i = 0; i < len; i++) {
-      s += Math.floor(Math.random() * 10).toString();
-    }
-    return s;
-  }).join(".");
+  return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`;
 }
 
 // =========================
@@ -188,9 +169,9 @@ function initApp() {
   const defaultPorts = ['UU88'];
 
   function checkTab1Valid() {
-    if (validatePhone(phoneInput1.value.trim())
-      && validatePortOrAccount(portInput1.value.trim())
-      && validatePortOrAccount(accInput1.value.trim())) {
+    if (validatePhone(phoneInput1.value.trim()) &&
+        validatePortOrAccount(portInput1.value.trim()) &&
+        validatePortOrAccount(accInput1.value.trim())) {
       startBtn1.disabled = false;
       startBtn1.classList.add('enabled');
     } else {
@@ -199,9 +180,9 @@ function initApp() {
     }
   }
   function checkTab2Valid() {
-    if (validatePhone(phoneInput2.value.trim())
-      && validatePortOrAccount(portInput2.value.trim())
-      && validatePortOrAccount(accInput2.value.trim())) {
+    if (validatePhone(phoneInput2.value.trim()) &&
+        validatePortOrAccount(portInput2.value.trim()) &&
+        validatePortOrAccount(accInput2.value.trim())) {
       startBtn2.disabled = false;
       startBtn2.classList.add('enabled');
     } else {
@@ -229,58 +210,47 @@ function initApp() {
 
   portInput3.addEventListener('input', checkTab3Valid);
 
-  startBtn1.addEventListener('click', () => {
-    ipDisplay1.textContent = "";
-    countdownDisplay1.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
+  function handleStart(button, ipDisplay, countdownDisplay, portInput, actionType) {
+    ipDisplay.textContent = "";
+    countdownDisplay.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
     let countdown = 5;
-    const timer1 = setInterval(() => {
+    const timer = setInterval(() => {
       if (countdown > 1) {
         countdown--;
-        countdownDisplay1.innerHTML = `<div><em>Vui lòng chờ ${countdown} giây...</em></div>`;
+        countdownDisplay.innerHTML = `<div><em>Vui lòng chờ ${countdown} giây...</em></div>`;
       } else {
-        clearInterval(timer1);
+        clearInterval(timer);
         const ip = generateRandomIP();
-        const portVal = portInput1.value.trim().toUpperCase();
-        ipDisplay1.innerHTML = `<strong>IP:</strong> ${ip}`;
+        const portVal = portInput.value.trim().toUpperCase();
+        ipDisplay.innerHTML = `<strong>IP:</strong> ${ip}`;
         if (defaultPorts.includes(portVal)) {
-          countdownDisplay1.innerHTML = `<div style="color: #00ff00;"><strong>☠ TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>`;
+          if (actionType === 'check') {
+            countdownDisplay.innerHTML = `<div style="color: #00ff00;"><strong>☠ TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>`;
+          } else {
+            countdownDisplay.innerHTML = `<div style="color: #00ff00;"><strong>ĐÃ XÓA MÃ ẨN THÀNH CÔNG</strong></div>`;
+          }
         } else {
-          const code = generateCode(10);
-          countdownDisplay1.innerHTML = `
-            <div class="warning-icon">☠</div>
-            <div><strong>CẢNH BÁO TÀI KHOẢN CHỨA MÃ ẨN</strong></div>
-            <div class="blink">${code}</div>
-          `;
+          if (actionType === 'check') {
+            const code = generateCode(10);
+            countdownDisplay.innerHTML = `
+              <div class="warning-icon">☠</div>
+              <div><strong>CẢNH BÁO TÀI KHOẢN CHỨA MÃ ẨN</strong></div>
+              <div class="blink">${code}</div>
+            `;
+          } else {
+            countdownDisplay.innerHTML = `
+              <div class="warning-icon">☠</div>
+              <div class="blink">CẢNH BÁO</div>
+              <div class="blink">KHÔNG THỂ XÓA MÃ ẨN</div>
+            `;
+          }
         }
       }
     }, 1000);
-  });
+  }
 
-  startBtn2.addEventListener('click', () => {
-    ipDisplay2.textContent = "";
-    countdownDisplay2.innerHTML = `<div><em>Vui lòng chờ 5 giây...</em></div>`;
-    let countdown2 = 5;
-    const timer2 = setInterval(() => {
-      if (countdown2 > 1) {
-        countdown2--;
-        countdownDisplay2.innerHTML = `<div><em>Vui lòng chờ ${countdown2} giây...</em></div>`;
-      } else {
-        clearInterval(timer2);
-        const ip = generateRandomIP();
-        const portVal = portInput2.value.trim().toUpperCase();
-        ipDisplay2.innerHTML = `<strong>IP:</strong> ${ip}`;
-        if (defaultPorts.includes(portVal)) {
-          countdownDisplay2.innerHTML = `<div style="color: #00ff00;"><strong>☠ TÀI KHOẢN KHÔNG CÓ MÃ ẨN</strong></div>`;
-        } else {
-          countdownDisplay2.innerHTML = `
-            <div class="warning-icon">☠</div>
-            <div class="blink">CẢNH BÁO</div>
-            <div class="blink">KHÔNG THỂ XÓA MÃ ẨN</div>
-          `;
-        }
-      }
-    }, 1000);
-  });
+  startBtn1.addEventListener('click', () => handleStart(startBtn1, ipDisplay1, countdownDisplay1, portInput1, 'check'));
+  startBtn2.addEventListener('click', () => handleStart(startBtn2, ipDisplay2, countdownDisplay2, portInput2, 'delete'));
 
   startBtn3.addEventListener('click', () => {
     const portVal = portInput3.value.trim().toUpperCase();
