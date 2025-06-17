@@ -2,126 +2,68 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KIỂM TRA MÃ ẨN - XÓA MÃ ẨN</title>
-
-  <!-- Nhúng font Share Tech Mono -->
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
-  <!-- Link đến CSS bên ngoài -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <!-- Canvas chạy hiệu ứng Matrix Rain -->
   <canvas id="matrix"></canvas>
 
-  <!-- ===== Login Overlay ===== -->
   <div id="login-overlay">
     <div class="login-box">
       <h2>Đăng nhập</h2>
+      <div class="field"><label>Tên đăng nhập</label><input id="login-user" type="text"></div>
       <div class="field">
-        <label for="login-user">Tên đăng nhập</label>
-        <input type="text" id="login-user" placeholder="Username">
-      </div>
-      <div class="field">
-        <label for="login-pass">Mật khẩu</label>
+        <label>Mật khẩu</label>
         <div class="password-wrapper">
-          <input type="password" id="login-pass" placeholder="Password">
-          <!-- Biểu tượng con mắt -->
-          <span class="toggle-password" id="togglePass">👁️</span>
+          <input id="login-pass" type="password">
+          <span id="togglePass">👁️</span>
         </div>
       </div>
-      <button class="login-btn" id="login-btn" disabled>Đăng nhập</button>
+      <button id="login-btn" disabled>Đăng nhập</button>
       <div class="error-msg" id="login-error">Vui lòng điền đầy đủ thông tin</div>
     </div>
   </div>
-  <!-- ===== End Login Overlay ===== -->
 
-  <!-- Cửa sổ chính -->
   <div class="terminal-window">
-    
-    <!-- Thanh tiêu đề -->
     <div class="title-bar">
-      <div class="title">KIỂM TRA MÃ ẨN  -  XÓA MÃ ẨN</div>
-      <div class="window-controls">
-        <span class="control minimize"></span>
-        <span class="control maximize"></span>
-        <span class="control close"></span>
-      </div>
+      <div class="title">KIỂM TRA MÃ ẨN - XÓA MÃ ẨN</div>
     </div>
-    
-    <!-- Thanh Tabs -->
     <div class="tabs">
       <span class="tab active" data-tab="tab1">Kiểm tra mã ẩn</span>
       <span class="tab" data-tab="tab2">Xóa mã ẩn</span>
       <span class="tab" data-tab="tab3">Kiểm tra cổng game</span>
     </div>
-    
+
     <!-- Tab 1 -->
     <div class="tab-content active" id="tab1">
-      <div class="tab1-flex">
-        <div class="tab1-form">
-          <div class="field">
-            <label for="phone">Số điện thoại_</label>
-            <input type="text" id="phone" placeholder="">
-          </div>
-          <div class="field">
-            <label for="game-port">Cổng game_</label>
-            <input type="text" id="game-port" placeholder="">
-          </div>
-          <div class="field">
-            <label for="game-account">Tài khoản game_</label>
-            <input type="text" id="game-account" placeholder="">
-          </div>
-          <button class="action-btn" id="start-btn1" disabled>START</button>
-          <div class="ip-display" id="ip-display1"></div>
-        </div>
-        <div class="tab1-countdown" id="countdown-display1"></div>
-      </div>
-      <div class="result-block" id="result-block1-extra"></div>
+      <input id="phone" placeholder="Số điện thoại" />
+      <input id="game-port" placeholder="Cổng game" />
+      <input id="game-account" placeholder="Tài khoản game" />
+      <button id="start-btn1" disabled>START</button>
+      <div id="ip-display1"></div>
+      <div id="countdown-display1"></div>
     </div>
 
     <!-- Tab 2 -->
     <div class="tab-content" id="tab2">
-      <div class="tab2-flex">
-        <div class="tab2-form">
-          <div class="field">
-            <label for="del-phone">Số điện thoại_</label>
-            <input type="text" id="del-phone" placeholder="">
-          </div>
-          <div class="field">
-            <label for="del-game-port">Cổng game_</label>
-            <input type="text" id="del-game-port" placeholder="">
-          </div>
-          <div class="field">
-            <label for="del-game-account">Tài khoản game_</label>
-            <input type="text" id="del-game-account" placeholder="">
-          </div>
-          <button class="action-btn" id="start-btn2" disabled>START</button>
-          <div class="ip-display" id="ip-display2"></div>
-        </div>
-        <div class="tab2-countdown" id="countdown-display2"></div>
-      </div>
-      <div class="result-block" id="result-block2-extra"></div>
+      <input id="del-phone" placeholder="Số điện thoại" />
+      <input id="del-game-port" placeholder="Cổng game" />
+      <input id="del-game-account" placeholder="Tài khoản game" />
+      <button id="start-btn2" disabled>START</button>
+      <div id="ip-display2"></div>
+      <div id="countdown-display2"></div>
     </div>
 
     <!-- Tab 3 -->
     <div class="tab-content" id="tab3">
-      <div class="tab3-form">
-        <div class="field">
-          <label for="check-port">Cổng game_</label>
-          <input type="text" id="check-port" placeholder="">
-        </div>
-        <button class="action-btn" id="start-btn3" disabled>START</button>
-      </div>
-      <div class="tab3-countdown" id="countdown-display3"></div>
-      <div class="result-block" id="result-block3-extra"></div>
+      <input id="check-port" placeholder="Cổng game" />
+      <button id="start-btn3" disabled>START</button>
+      <div id="countdown-display3"></div>
     </div>
-
   </div>
 
-  <!-- Link đến JavaScript bên ngoài -->
   <script src="script.js"></script>
 </body>
 </html>
